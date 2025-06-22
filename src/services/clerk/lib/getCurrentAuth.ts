@@ -1,5 +1,6 @@
 import { db } from "@/drizzle/db";
-import { UserTable } from "@/drizzle/schema";
+import { OrganizationTable, UserTable } from "@/drizzle/schema";
+import { getOrganizationIdTag } from "@/features/organizations/db/cache/organizations";
 import { getUserIdTag } from "@/features/users/db/cache/users";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
@@ -14,10 +15,33 @@ export const getCurrentUser = async ({ allData = false } = {}) => {
   };
 };
 
+export const getCurrentOrganization = async ({ allData = false } = {}) => {
+  const { orgId } = await auth();
+
+  return {
+    orgId,
+    organization:
+      allData && orgId != null ? await getOrganization(orgId) : undefined,
+  };
+};
+
 const getUser = async (id: string) => {
   "use cache";
   cacheTag(getUserIdTag(id));
 
   const [user] = await db.select().from(UserTable).where(eq(UserTable.id, id));
+
   return user;
+};
+
+const getOrganization = async (id: string) => {
+  "use cache";
+  cacheTag(getOrganizationIdTag(id));
+
+  const [organization] = await db
+    .select()
+    .from(OrganizationTable)
+    .where(eq(OrganizationTable.id, id));
+
+  return organization;
 };

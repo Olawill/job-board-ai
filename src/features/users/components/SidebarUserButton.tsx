@@ -19,7 +19,7 @@ const SidebarUserSuspense = async () => {
   if (user == null) {
     return (
       <SignOutButton>
-        <SidebarMenuButton>
+        <SidebarMenuButton className="cursor-pointer">
           <LogOutIcon />
           <span>Log Out</span>
         </SidebarMenuButton>

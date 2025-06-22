@@ -1,4 +1,11 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "cSpell.words": ["Inngest", "poder", "Retriable", "svix"]
+  "cSpell.words": [
+    "delisted",
+    "Inngest",
+    "mdxeditor",
+    "poder",
+    "Retriable",
+    "svix"
+  ]
 }
