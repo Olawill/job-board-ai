@@ -71,7 +71,7 @@ export const formatJobListingStatus = (status: JobListingStatuses) => {
     case "draft":
       return "Draft";
     case "published":
-      return "Published";
+      return "Active";
     case "delisted":
       return "Delisted";
     default:
