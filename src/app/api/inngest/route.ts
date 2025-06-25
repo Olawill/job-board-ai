@@ -8,6 +8,8 @@ import {
   clerkUpdateOrganization,
   clerkUpdateUser,
 } from "@/services/inngest/functions/clerk";
+import { createAISummaryOfUploadedResume } from "@/services/inngest/functions/resume";
+import { rankApplication } from "@/services/inngest/functions/jobApplication";
 
 // Create an API that serves zero functions
 export const { GET, POST, PUT } = serve({
@@ -20,5 +22,7 @@ export const { GET, POST, PUT } = serve({
     clerkCreateOrganization,
     clerkUpdateOrganization,
     clerkDeleteOrganization,
+    createAISummaryOfUploadedResume,
+    rankApplication,
   ],
 });

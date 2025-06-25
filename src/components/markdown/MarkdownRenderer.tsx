@@ -2,7 +2,8 @@ import { cn } from "@/lib/utils";
 import remarkGfm from "remark-gfm";
 import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 
-import { markdownClassNames } from "./_MarkdownEditor";
+export const markdownClassNames =
+  "max-w-none prose prose-neutral dark:prose-invert font-sans";
 
 export const MarkdownRenderer = ({
   className,

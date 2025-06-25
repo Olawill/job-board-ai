@@ -62,7 +62,7 @@ const SuspendedComponent = async ({ searchParams, params }: Props) => {
 
   const search = success ? data : {};
 
-  const jobListings = await getJobListings(await searchParams, jobListingId);
+  const jobListings = await getJobListings(search, jobListingId);
 
   if (jobListings.length === 0) {
     return (
@@ -190,6 +190,7 @@ const getJobListings = async (
 
   const { title, city, locationRequirement, type, jobIds, state, experience } =
     searchParams;
+
   const whereConditions: (SQL | undefined)[] = [];
 
   if (title) {
@@ -218,7 +219,7 @@ const getJobListings = async (
     whereConditions.push(eq(JobListingTable.experienceLevel, experience));
   }
 
-  if (jobIds) {
+  if (jobIds && jobIds.length > 0) {
     whereConditions.push(
       or(...jobIds.map((jobId) => eq(JobListingTable.id, jobId)))
     );

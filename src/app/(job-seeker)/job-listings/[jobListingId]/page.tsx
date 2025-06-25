@@ -52,7 +52,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import { NewJobListingApplicationForm } from "@/features/jobListingsApplications/components/NewJobListingApplicationForm";
 
 const JobListingPage = ({
@@ -74,7 +74,7 @@ const JobListingPage = ({
           breakpoint="min-width: 1024px"
           otherwise={
             <ClientSheet>
-              <SheetContent hideCloseButton className="p-4">
+              <SheetContent hideCloseButton className="p-4 overflow-y-auto">
                 <SheetHeader className="sr-only">
                   <SheetTitle>Job Listing Details</SheetTitle>
                   <SheetDescription>
@@ -179,9 +179,7 @@ const JobListingDetails = async ({
         </Suspense>
       </div>
 
-      <ScrollArea className="h-screen pb-4">
-        <MarkdownRenderer source={jobListing.description} />
-      </ScrollArea>
+      <MarkdownRenderer source={jobListing.description} />
     </div>
   );
 };

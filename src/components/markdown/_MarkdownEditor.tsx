@@ -24,9 +24,7 @@ import {
 } from "@mdxeditor/editor";
 import { cn } from "@/lib/utils";
 import { useIsDarkMode } from "@/hooks/useIsDarkMode";
-
-export const markdownClassNames =
-  "max-w-none prose prose-neutral dark:prose-invert font-sans";
+import { markdownClassNames } from "./MarkdownRenderer";
 
 const InternalMarkdownEditor = ({
   ref,

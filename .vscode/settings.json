@@ -1,6 +1,7 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "cSpell.words": [
+    "deepseek",
     "delisted",
     "ilike",
     "Inngest",
