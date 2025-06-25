@@ -6,6 +6,7 @@ import { ClerkProvider } from "@/services/clerk/components/ClerkProvider";
 
 import "./globals.css";
 import "@mdxeditor/editor/style.css";
+import { UploadThingSSR } from "@/services/uploadthing/components/UploadThingSSR";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans`}
         >
+          <UploadThingSSR />
           <Toaster richColors />
           {children}
         </body>

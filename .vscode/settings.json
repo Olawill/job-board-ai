@@ -2,10 +2,13 @@
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "cSpell.words": [
     "delisted",
+    "ilike",
     "Inngest",
     "mdxeditor",
     "poder",
     "Retriable",
-    "svix"
+    "sonner",
+    "svix",
+    "Uploadthing"
   ]
 }

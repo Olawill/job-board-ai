@@ -47,6 +47,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@t3-oss/env-core": "^0.13.8",
     "@t3-oss/env-nextjs": "^0.13.8",
+    "@uploadthing/react": "^7.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -70,6 +71,7 @@
     "sonner": "^2.0.5",
     "svix": "^1.67.0",
     "tailwind-merge": "^3.3.1",
+    "uploadthing": "^7.7.3",
     "vaul": "^1.1.2",
     "zod": "^3.25.67"
   },
