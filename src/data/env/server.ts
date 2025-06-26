@@ -15,6 +15,11 @@ export const env = createEnv({
     GEMINI_API_KEY: z.string().min(1),
     DEEPSEEK_API_KEY: z.string().min(1),
     ANTHROPIC_API_KEY: z.string().min(1),
+    SMTP_HOST: z.string().min(1),
+    SMTP_PORT: z.string().min(1),
+    SMTP_USER: z.string().min(1),
+    SMTP_PASSWORD: z.string().min(1),
+    SERVER_URL: z.string().min(1),
   },
   createFinalSchema: (env) => {
     return z.object(env).transform((val) => {
