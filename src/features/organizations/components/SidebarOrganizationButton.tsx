@@ -27,7 +27,7 @@ const SidebarOrganizationSuspense = async () => {
   if (user == null || organization == null) {
     return (
       <SignOutButton>
-        <SidebarMenuButton className="cursor-pointer">
+        <SidebarMenuButton className="cursor-pointer" tooltip="Log Out">
           <LogOutIcon />
           <span>Log Out</span>
         </SidebarMenuButton>

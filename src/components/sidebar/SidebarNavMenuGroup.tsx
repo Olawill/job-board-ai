@@ -33,7 +33,11 @@ export const SidebarNavMenuGroup = ({
         {items.map((item) => {
           const html = (
             <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton asChild isActive={pathname === item.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === item.href}
+                tooltip={item.label}
+              >
                 <Link href={item.href}>
                   {item.icon}
                   <span>{item.label}</span>

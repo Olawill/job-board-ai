@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 
 import { db } from "@/drizzle/db";
-import { JobListingStatuses, JobListingTable } from "@/drizzle/schema";
+import {
+  JobListingApplicationTable,
+  JobListingStatuses,
+  JobListingTable,
+} from "@/drizzle/schema";
 
 import { Badge } from "@/components/ui/badge";
 
@@ -42,6 +46,14 @@ import {
   toggleJobListingFeatured,
   toggleJobListingStatus,
 } from "@/features/jobListings/actions/actions";
+import { Separator } from "@/components/ui/separator";
+import { getJobListingApplicationJobListingTag } from "@/features/jobListingsApplications/db/cache/jobListingApplications";
+import { getUserIdTag } from "@/features/users/db/cache/users";
+import { getUserResumeIdTag } from "@/features/users/db/cache/userResumes";
+import {
+  ApplicationTable,
+  SkeletonApplicationTable,
+} from "@/features/jobListingsApplications/components/ApplicationTable";
 
 type Props = {
   params: Promise<{ jobListingId: string }>;
@@ -122,6 +134,14 @@ const SuspendedPage = async ({ params }: Props) => {
         }
         dialogTitle="Description"
       />
+
+      <Separator />
+      <div className="space-y-6">
+        <h2 className="font-semibold text-xl">Applications</h2>
+        <Suspense fallback={<SkeletonApplicationTable />}>
+          <Applications jobListingId={jobListingId} />
+        </Suspense>
+      </div>
     </div>
   );
 };
@@ -276,6 +296,41 @@ const featuredToggleButtonText = (isFeatured: boolean) => {
   );
 };
 
+const Applications = async ({ jobListingId }: { jobListingId: string }) => {
+  const applications = await getJobListingApplications(jobListingId);
+  const canUpdateRating = await hasOrgUserPermission(
+    "org:job_listings_applications:change_rating"
+  );
+  const canUpdateStage = await hasOrgUserPermission(
+    "org:job_listings_applications:change_stage"
+  );
+
+  // console.log({ canUpdateRating, canUpdateStage });
+  return (
+    <ApplicationTable
+      applications={applications.map((a) => ({
+        ...a,
+        user: {
+          ...a.user,
+          resume: a.user.resume
+            ? {
+                ...a.user.resume,
+                markdownSummary: a.user.resume.aiSummary ? (
+                  <MarkdownRenderer source={a.user.resume.aiSummary} />
+                ) : null,
+              }
+            : null,
+        },
+        coverLetterMarkdown: a.coverletter ? (
+          <MarkdownRenderer source={a.coverletter} />
+        ) : null,
+      }))}
+      canUpdateRating={canUpdateRating}
+      canUpdateStage={canUpdateStage}
+    />
+  );
+};
+
 export const getJobListing = async (id: string, orgId: string) => {
   "use cache";
   cacheTag(getJobListingIdTag(id));
@@ -286,6 +341,46 @@ export const getJobListing = async (id: string, orgId: string) => {
       eq(JobListingTable.organizationId, orgId)
     ),
   });
+};
+
+const getJobListingApplications = async (jobListingId: string) => {
+  "use cache";
+  cacheTag(getJobListingApplicationJobListingTag(jobListingId));
+
+  const data = await db.query.JobListingApplicationTable.findMany({
+    where: eq(JobListingApplicationTable.jobListingId, jobListingId),
+    columns: {
+      coverletter: true,
+      createdAt: true,
+      stage: true,
+      rating: true,
+      jobListingId: true,
+    },
+    with: {
+      user: {
+        columns: {
+          id: true,
+          name: true,
+          imageUrl: true,
+        },
+        with: {
+          resume: {
+            columns: {
+              resumeFileUrl: true,
+              aiSummary: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  data.forEach(({ user }) => {
+    cacheTag(getUserIdTag(user.id));
+    cacheTag(getUserResumeIdTag(user.id));
+  });
+
+  return data;
 };
 
 export default JobListingIdPage;
